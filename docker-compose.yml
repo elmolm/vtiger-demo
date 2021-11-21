@@ -1,0 +1,29 @@
+version: "3.9"
+services:
+  vtiger:
+    image: javanile/vtiger:7.2.0
+    environment:
+      - VT_SITE_URL=http://localhost:8080
+      - MYSQL_HOST=vtiger-db
+      - MYSQL_DATABASE=vtigercrm
+      - MYSQL_ROOT_PASSWORD=vtigercrm
+    ports:
+      - 8080:80
+    volumes:
+      - vtiger:/var/lib/vtiger
+  vtiger-db:
+    image: mariadb:10.7.1
+    restart: always
+    ports:
+      - 3306:3306
+    security_opt:
+      - seccomp:unconfined
+    environment:
+    - MYSQL_DATABASE=vtigercrm
+    - MYSQL_ROOT_PASSWORD=vtigercrm
+    volumes:
+      - db_data:/var/lib/mysql:rw
+
+volumes:
+  db_data:
+  vtiger:
